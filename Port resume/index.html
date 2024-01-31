@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>JR Engineer - Portfolio</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="stylesheet" href="styles.css"> <!-- Link to the external CSS file -->
+        <style>
+            body {
+                margin: 0;
+                font-family: 'Arial', sans-serif;
+                transition: background-color 0.5s, color 0.5s;
+            }
+
+            .light-mode {
+                background-color: #fff;
+                color: #000;
+            }
+
+            .dark-mode {
+                background-color: #161618;
+                color: #fff;
+            }
+
+            header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                background-color: transparent;
+                padding: 10px;
+                text-align: right;
+                z-index: 1000;
+                transition: background-color 0.5s, color 0.5s;
+            }
+
+            #banner-area-wrapper {
+                display: none
+            }
+
+            #headerNav {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                align-items: center;
+            }
+
+            #headerNav button {
+                background-color: transparent;
+                color: inherit;
+                /* Inherit text color from parent */
+                border: none;
+                cursor: pointer;
+                padding: 5px 10px;
+                transition: background-color 0.3s, color 0.3s;
+            }
+
+            #headerNav button:hover {
+                background-color: rgba(37, 3, 3, 0);
+            }
+
+            #themeSwitch {
+                cursor: pointer;
+                color: #fff;
+                margin-right: 10px;
+            }
+
+            #headerNav .active {
+                background-color: rgba(255, 255, 255, 0);
+            }
+
+            section {
+                height: 100vh;
+                padding: 50px;
+                text-align: center;
+                margin-top: 80px;
+                /* Adjusted margin for content to appear below fixed header */
+            }
+        </style>
+    </head>
+
+    <body class="light-mode">
+
+        <header>
+            <div id="headerNav">
+                <button data-section="home" onclick="scrollToSection('home')">Home</button>
+                <button data-section="about" onclick="scrollToSection('about')">About Me</button>
+                <button data-section="skills" onclick="scrollToSection('skills')">Skills</button>
+                <button data-section="projects" onclick="scrollToSection('projects')">Projects</button>
+                <button data-section="connect" onclick="scrollToSection('connect')">Connect</button>
+                <button id="themeSwitch" onclick="toggleTheme()">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+        </header>
+
+        <section id="home">
+            <h2>Home</h2>
+            <!-- Home page content -->
+        </section>
+
+        <section id="about">
+            <h2>About Me</h2>
+            <!-- About Me page content -->
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+            <!-- Skills page content -->
+        </section>
+
+        <section id="projects">
+            <h2>Projects</h2>
+            <!-- Projects page content -->
+        </section>
+
+        <section id="connect">
+            <h2>Connect</h2>
+            <!-- Connect page content -->
+        </section>
+
+        <script>
+            const body = document.body;
+            const header = document.querySelector('header');
+            const themeSwitch = document.getElementById('themeSwitch');
+            const headerNavButtons = document.querySelectorAll('#headerNav button');
+
+            function toggleTheme() {
+                body.classList.toggle('dark-mode');
+                updateHeaderTheme();
+                updateIcon();
+            }
+
+            function updateIcon() {
+                const isDarkMode = body.classList.contains('dark-mode');
+                themeSwitch.innerHTML = isDarkMode ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+            }
+
+            function updateHeaderTheme() {
+                const isDarkMode = body.classList.contains('dark-mode');
+                header.style.backgroundColor = isDarkMode ? 'transparent' : 'rgba(0, 0, 0, 0.5)';
+                header.style.color = isDarkMode ? '#fff' : '#000';
+
+                // Update nav menu button text color
+                headerNavButtons.forEach((button) => {
+                    button.style.color = isDarkMode ? '#fff' : 'inherit';
+                });
+            }
+
+            // Check user's browser theme preference
+            const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (prefersDarkMode) {
+                body.classList.add('dark-mode');
+            }
+
+            // Ensure the page remains in light mode if the user prefers it
+            const prefersLightMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+
+            if (prefersLightMode) {
+                body.classList.remove('dark-mode');
+            }
+
+            updateIcon();
+            updateHeaderTheme();
+
+            function scrollToSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                section.scrollIntoView({ behavior: 'smooth' });
+
+                // Highlight the clicked button
+                headerNavButtons.forEach((button) => {
+                    button.classList.remove('active');
+                });
+                const clickedButton = document.querySelector(`#headerNav button[data-section="${sectionId}"]`);
+                if (clickedButton) {
+                    clickedButton.classList.add('active');
+                }
+            }
+
+            window.addEventListener('scroll', handleScroll);
+
+            function handleScroll() {
+                // Ensure the header consistently appears
+                header.style.opacity = '1';
+            }
+        </script>
+    </body>
+
+</html>
